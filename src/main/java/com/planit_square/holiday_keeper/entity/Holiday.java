@@ -20,7 +20,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "holidays",
     indexes = {
-        @Index(name = "idx_country_year", columnList = "countryCode, year"), // 국가별 연도 검색용
+        @Index(name = "idx_country_year", columnList = "country_code, holiday_year"), // 국가별 연도 검색용
         @Index(name = "idx_country_date", columnList = "country_code, date") // 국가별 날짜 범위 검색용
     })
 @Getter
@@ -44,7 +44,7 @@ public class Holiday {
     @Convert(converter = CountryConverter.class)
     private Country country;
 
-    @Column(nullable = false)
+    @Column(name = "holiday_year", nullable = false)
     private Integer year; // 검색 성능용
 
     @CreationTimestamp
@@ -65,9 +65,7 @@ public class Holiday {
     // Upsert를 위한 비즈니스 키 비교
     public boolean isSameHoliday(Holiday other) {
         return this.date.equals(other.date)
-            && this.country.equals(other.country)
-            && this.name.equals(other.name)
-            && this.localName.equals(other.localName);  // 추가!
+            && this.country.equals(other.country);
     }
 
     public void updateInfo(String localName, String name) {
