@@ -4,7 +4,6 @@ import com.planit_square.holiday_keeper.dto.HolidaySearchDto;
 import com.planit_square.holiday_keeper.entity.Holiday;
 import com.planit_square.holiday_keeper.entity.QHoliday;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +49,7 @@ public class HolidayRepositoryImpl implements HolidayRepositoryCustom {
             .selectFrom(holiday)
             .where(builder)
             .orderBy(
-                Expressions.stringPath("country_code").asc(),
+//                Expressions.stringPath("country_code").asc(),
                 holiday.year.desc(),
                 holiday.date.asc()
             )
