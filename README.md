@@ -13,7 +13,7 @@ curl http://localhost:8080/api/holidays
 ```
 
 ## 🧪 테스트
-![테스트 결과](screenshots/test-result.png)
+![테스트 결과](screenshot/test-result.jpeg)
 ```bash
 # 전체 테스트 실행
 ./gradlew clean test
