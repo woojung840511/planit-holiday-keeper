@@ -21,7 +21,7 @@ public class Country {
     // 런타임 캐시 (API에서 로드된 최신 데이터)
     private static final Map<String, String> RUNTIME_CACHE = new ConcurrentHashMap<>();
 
-    // 정적 캐시 (애플리케이션 시작 시 로드된 데이터, 주요 40개 국가)
+    // 정적 캐시 (애플리케이션 시작 시 로드)
     private static final Map<String, String> FALLBACK_COUNTRIES = new HashMap<>() {{
         put("AD", "Andorra");
         put("AL", "Albania");
@@ -65,7 +65,7 @@ public class Country {
     static {
         // 런타임 캐시 초기화: 정적 캐시에서 데이터를 복사
         RUNTIME_CACHE.putAll(FALLBACK_COUNTRIES);
-        log.info("Initialized runtime cache with fallback countries: {}", FALLBACK_COUNTRIES.keySet());
+        log.info("국가 캐시 초기화 완료: {} 개국", FALLBACK_COUNTRIES.size());
     }
 
     public static Country of(String code) {
@@ -77,7 +77,7 @@ public class Country {
 
     private static String validateAndNormalize(String code) {
         if (code == null || code.length() != 2) {
-            log.error("Invalid country code: {}", code);
+            log.error("잘못된 국가 코드: {}", code);
             throw new IllegalArgumentException("Country code must be exactly 2 characters long");
         }
         return code.toUpperCase();
@@ -87,16 +87,16 @@ public class Country {
         if (apiData != null && !apiData.isEmpty()) {
             RUNTIME_CACHE.clear();
             RUNTIME_CACHE.putAll(apiData);
-            log.info("✅ Country cache updated with {} countries from API", apiData.size());
+            log.info("✅ 국가 캐시 업데이트 완료: {} 개국", apiData.size());
         } else {
-            log.warn("⚠️ API data is null or empty");
+            log.warn("⚠️ API 데이터 비어있음");
         }
     }
 
     public static void restoreToFallback() {
         RUNTIME_CACHE.clear();
         RUNTIME_CACHE.putAll(FALLBACK_COUNTRIES);
-        log.info("🔄 Country cache restored to fallback data ({} countries)", FALLBACK_COUNTRIES.size());
+        log.info("🔄 국가 캐시를 기본값으로 복원: {} 개국", FALLBACK_COUNTRIES.size());
     }
 
 }
